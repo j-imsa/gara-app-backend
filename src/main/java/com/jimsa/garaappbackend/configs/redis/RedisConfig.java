@@ -5,19 +5,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory("redis", 7400);
+        return new LettuceConnectionFactory("localhost", 7400);
     }
 
     @Bean
     public RedisTemplate<String, String> redisTemplate() {
-        RedisTemplate<String, String> tpl = new RedisTemplate<>();
-        tpl.setConnectionFactory(redisConnectionFactory());
-        return tpl;
+        RedisTemplate<String, String> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory());
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
+        return template;
     }
+
 }

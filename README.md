@@ -54,6 +54,7 @@
 
 ### Authentication
 - `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/refresh` - Refresh JWT token
 
@@ -66,7 +67,7 @@ Create `application.yml` with your settings:
 
 ```yaml
 server: 
-  port: 8888
+  port: 7000
 
 jwt: 
   secret: 

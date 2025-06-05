@@ -3,6 +3,7 @@ package com.jimsa.garaappbackend.ws.controllers;
 import com.jimsa.garaappbackend.ws.model.dtos.LoginDto;
 import com.jimsa.garaappbackend.ws.model.dtos.RefreshTokenRequestDto;
 import com.jimsa.garaappbackend.ws.model.dtos.ResponseDto;
+import com.jimsa.garaappbackend.ws.model.dtos.UserDto;
 import com.jimsa.garaappbackend.ws.services.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,6 +50,17 @@ public class AuthController {
                 .body(ResponseDto.builder()
                         .action(true)
                         .result(authService.refreshToken(refreshTokenRequest.getRefreshToken()))
+                        .build()
+                );
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<ResponseDto> register(@RequestBody UserDto userDto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ResponseDto.builder()
+                        .action(true)
+                        .result(authService.register(userDto))
                         .build()
                 );
     }

@@ -4,8 +4,10 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jimsa.garaappbackend.configs.auth.JwtUtil;
 import com.jimsa.garaappbackend.configs.exception.AppServiceException;
 import com.jimsa.garaappbackend.utils.Base64EncodedCredentialsUtils;
+import com.jimsa.garaappbackend.utils.mappers.UserMapper;
 import com.jimsa.garaappbackend.ws.model.dtos.LoginDto;
 import com.jimsa.garaappbackend.ws.model.dtos.TokenResponseDto;
+import com.jimsa.garaappbackend.ws.model.dtos.UserDto;
 import com.jimsa.garaappbackend.ws.model.entities.UserEntity;
 import com.jimsa.garaappbackend.ws.repositories.UserRepository;
 import com.jimsa.garaappbackend.ws.services.AuthService;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static com.jimsa.garaappbackend.utils.constants.SecurityConstants.*;
@@ -28,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final Base64EncodedCredentialsUtils base64EncodedCredentialsUtils;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
 
     @Override
@@ -94,6 +98,10 @@ public class AuthServiceImpl implements AuthService {
             DecodedJWT decodedJWT = jwtUtil.verifyToken(token);
             String username = decodedJWT.getClaim(APP_SECURITY_USERNAME).asString();
 
+            // Blacklist the current access token
+            Date expirationDate = decodedJWT.getExpiresAt();
+            jwtUtil.blacklistToken(token, expirationDate.getTime());
+
             // Revoke all refresh tokens for this user
             jwtUtil.revokeAllRefreshTokensForUser(username);
 
@@ -125,6 +133,9 @@ public class AuthServiceImpl implements AuthService {
 
             UserEntity user = userOptional.get();
 
+            // Blacklist all existing access tokens for this user
+            jwtUtil.blacklistAllAccessTokensForUser(username);
+
             // Generate new tokens
             String newAccessToken = jwtUtil.generateToken(
                     APP_SECURITY_JWT_TOKEN,
@@ -137,7 +148,7 @@ public class AuthServiceImpl implements AuthService {
             // Revoke the old refresh token
             jwtUtil.revokeRefreshToken(refreshToken);
 
-            log.info("Successful token refresh for user: {}", user.getUsername());
+            log.info("Successful token refresh for user: {} - Previous tokens invalidated", user.getUsername());
 
             return TokenResponseDto.builder()
                     .accessToken(newAccessToken)
@@ -146,12 +157,35 @@ public class AuthServiceImpl implements AuthService {
                     .expiresIn(EXPIRATION_TIME / 1000)
                     .build();
 
-
         } catch (Exception exception) {
             log.error("Token refresh error: {}", exception.getMessage(), exception);
             throw new AppServiceException("Token refresh failed", HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @Override
+    public UserDto register(UserDto userDto) {
+
+        // Check if username already exists
+        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+            throw new AppServiceException("Username already exists", HttpStatus.CONFLICT);
+        }
+
+        // Check if email already exists
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+            throw new AppServiceException("Email already exists", HttpStatus.CONFLICT);
+        }
+
+        // Use mapper to convert DTO to Entity
+        UserEntity userEntity = userMapper.toEntity(userDto);
+        userEntity.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        // Save user
+        UserEntity savedUser = userRepository.save(userEntity);
+
+        return userMapper.toDto(savedUser);
 
     }
+
 
 }

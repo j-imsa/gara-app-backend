@@ -10,7 +10,6 @@ spring:
     password: garapass
 
   jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     open-in-view: false
@@ -21,6 +20,11 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+
+  data:
+    redis:
+      host: localhost
+      port: 7400
 
 server:
   port: 7000

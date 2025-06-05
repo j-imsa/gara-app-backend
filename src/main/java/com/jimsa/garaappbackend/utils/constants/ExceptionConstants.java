@@ -5,5 +5,4 @@ public final class ExceptionConstants {
     }
 
     public static final String EXCEPTION_MESSAGE = "message";
-    public static final String EXCEPTION_REPORT_MESSAGE = "Code: %s, Message: Please contact the administrator";
 }

@@ -2,9 +2,7 @@ package com.jimsa.garaappbackend.configs.auth;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jimsa.garaappbackend.configs.exception.handlers.AppAuthenticationErrorHandler;
-import com.jimsa.garaappbackend.ws.model.dtos.ResponseDto;
 import com.jimsa.garaappbackend.ws.model.entities.UserEntity;
 import com.jimsa.garaappbackend.ws.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -14,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,12 +19,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import static com.jimsa.garaappbackend.utils.constants.ExceptionConstants.EXCEPTION_MESSAGE;
 import static com.jimsa.garaappbackend.utils.constants.RouteConstants.*;
 import static com.jimsa.garaappbackend.utils.constants.SecurityConstants.*;
 
