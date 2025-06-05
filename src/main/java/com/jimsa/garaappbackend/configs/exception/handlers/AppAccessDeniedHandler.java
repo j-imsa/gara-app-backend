@@ -11,6 +11,10 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.jimsa.garaappbackend.utils.constants.ExceptionConstants.EXCEPTION_MESSAGE;
 
 @Slf4j
 @Component
@@ -21,9 +25,12 @@ public class AppAccessDeniedHandler implements AccessDeniedHandler {
 
         log.error("AppAccessDeniedHandler: {}", accessDeniedException.getMessage());
 
+        Map<String, String> error = new HashMap<>();
+        error.put(EXCEPTION_MESSAGE,accessDeniedException.getLocalizedMessage());
+
         ResponseDto responseDto = ResponseDto.builder()
                 .action(false)
-                .result(accessDeniedException.getLocalizedMessage())
+                .result(error)
                 .build();
 
         response.setStatus(HttpStatus.FORBIDDEN.value());
