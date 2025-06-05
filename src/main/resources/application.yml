@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: gara-app-backend
+
+server:
+  port: 8888
+
