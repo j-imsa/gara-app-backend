@@ -2,9 +2,35 @@ spring:
   application:
     name: gara-app-backend
 
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:7100/garadb?createDatabaseIfNotExist=true
+    driver-class-name: org.postgresql.Driver
+    username: garauser
+    password: garapass
+
+  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
 server:
   port: 7000
 
 app:
   security:
     key: 7wOfs_4i-VefnbjRLAGywwMQ
+
+  frontend:
+    origins:
+      - http://localhost:3200
+      - http://127.0.0.1:3200
+
