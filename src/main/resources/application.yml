@@ -5,3 +5,6 @@ spring:
 server:
   port: 7000
 
+app:
+  security:
+    key: 7wOfs_4i-VefnbjRLAGywwMQ
