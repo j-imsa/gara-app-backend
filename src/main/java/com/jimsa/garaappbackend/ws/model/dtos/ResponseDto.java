@@ -1,4 +1,4 @@
-package com.jimsa.garaappbackend.ws.model.dto;
+package com.jimsa.garaappbackend.ws.model.dtos;
 
 import lombok.Builder;
 import lombok.Data;

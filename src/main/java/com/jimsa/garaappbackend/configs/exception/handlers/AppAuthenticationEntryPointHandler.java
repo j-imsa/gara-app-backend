@@ -1,6 +1,6 @@
 package com.jimsa.garaappbackend.configs.exception.handlers;
 
-import com.jimsa.garaappbackend.ws.model.dto.ResponseDto;
+import com.jimsa.garaappbackend.ws.model.dtos.ResponseDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

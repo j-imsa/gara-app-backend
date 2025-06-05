@@ -1,7 +1,7 @@
 package com.jimsa.garaappbackend.configs.exception.handlers;
 
 import com.jimsa.garaappbackend.configs.exception.AppServiceException;
-import com.jimsa.garaappbackend.ws.model.dto.ResponseDto;
+import com.jimsa.garaappbackend.ws.model.dtos.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
