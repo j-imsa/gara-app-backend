@@ -32,6 +32,18 @@ services:
     networks:
       - gara_net
 
+  # In-memory
+  redis:
+    image: redis:8
+    container_name: redis
+    restart: always
+    ports:
+      - "7400:6379"
+    volumes:
+      - ./redisdata:/data
+    networks:
+      - gara_net
+
 networks:
   gara_net:
     driver: bridge
