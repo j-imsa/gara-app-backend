@@ -4,6 +4,7 @@ mvnw
 mvnw.cmd
 pgdata/
 rabbitdata/
+redisdata/
 
 target/
 .mvn/wrapper/maven-wrapper.jar
