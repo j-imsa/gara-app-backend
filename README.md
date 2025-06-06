@@ -53,31 +53,17 @@
 ## 📡 API Endpoints
 
 ### Authentication
-- `POST /api/auth/login` - User login
-- `POST /api/auth/logout` - User logout
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/refresh` - Refresh JWT token
+- `POST /auth/login` - User login
+- `POST /auth/logout` - User logout
+- `POST /auth/register` - User registration
+- `POST /auth/refresh` - Refresh JWT token
 
 ### Real-time Events
-- `GET /api/events/stream` - SSE endpoint for live updates
+- `GET /sse/stream` - SSE endpoint for live updates
 
-## 🔧 Configuration
+### Normal Http endpoints
+- `GET /user/{public_id}` - User details
 
-Create `application.yml` with your settings:
-
-```yaml
-server: 
-  port: 7000
-
-jwt: 
-  secret: 
-    your-secret-key: 
-      expiration: 86400000
-
-spring: 
-  datasource: 
-    url: jdbc:h2:mem:garadb
-```
 
 
 ## 🤝 Contributing
